@@ -25,6 +25,7 @@ public class PatchProperties {
     private String dbRoot;
     private String deliveryPath;
     private String defaultBegin;
+    private Boolean commitFilter;
 
     public String getToolVersion() {
         return toolVersion;
@@ -176,5 +177,13 @@ public class PatchProperties {
 
     public void setDefaultBegin(String defaultBegin) {
         this.defaultBegin = defaultBegin;
+    }
+
+    public Boolean getCommitFilter() {
+        return commitFilter;
+    }
+
+    public void setCommitFilter(Boolean commitFilter) {
+        this.commitFilter = commitFilter;
     }
 }

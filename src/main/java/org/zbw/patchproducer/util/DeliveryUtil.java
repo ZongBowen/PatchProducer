@@ -45,9 +45,9 @@ public class DeliveryUtil {
         // 结束时间
         end = InputUtil.getEnd(scanner);
         // 获取日期区间内的交付物
-        getDeliveryFile();
+        getDeliveryFile(scanner);
         // 输出问题列表
-        getIssueLis();
+        getIssueLis(scanner);
         // 补丁参数
         getBuildParam(scanner);
         // 补丁名称
@@ -62,13 +62,13 @@ public class DeliveryUtil {
         return getResult();
     }
 
-    private static void getDeliveryFile() throws PatchBuildRuntimeException {
+    private static void getDeliveryFile(Scanner scanner) throws PatchBuildRuntimeException {
         try (Repository repository = JGitUtil.openRepository(path)) {
             try (Git git = new Git(repository)) {
                 // 拉取到最新
                 pull();
                 // 获取日期区间内的提交记录
-                getCommit(git);
+                getCommit(git, scanner);
                 if (commits.size() == 0) {
                     throw new PatchBuildRuntimeException("未获取到任何提交记录,结束生成");
                 }
@@ -89,10 +89,21 @@ public class DeliveryUtil {
         }
     }
 
-    private static void getIssueLis() {
+    private static void getIssueLis(Scanner scanner) {
         issues = new HashMap<>(MapUtil.getCapacity(commits.size()));
+        ArrayList<RevCommit> error = new ArrayList<>();
         for (RevCommit commit : commits) {
-            analyseLog(commit);
+            analyseLog(commit, error);
+        }
+        if (error.size() > 0) {
+            LogUtil.log("存在" + error.size() + "条提交记录无法解析提交内容: ");
+            int serial = 1;
+            for (RevCommit commit : error) {
+                LogUtil.log(formatCommit(commit, serial++));
+            }
+            if (!InputUtil.canBuild(scanner)) {
+                throw new PatchBuildRuntimeException("结束生成");
+            }
         }
         LogUtil.log("缺陷编号: " + String.join(",", issues.keySet()));
         LogUtil.log("缺陷列表: ");
@@ -193,20 +204,32 @@ public class DeliveryUtil {
         }
     }
 
-    private static void getCommit(Git git) throws GitAPIException {
+    private static void getCommit(Git git, Scanner scanner) throws GitAPIException {
         LogUtil.log("开始获取" + DateUtil.toString(begin, DateUtil.PATTERN) + "-" + DateUtil.toString(end, DateUtil.PATTERN) + "的提交记录...");
         Iterable<RevCommit> logs = git.log().setRevFilter(CommitTimeRevFilter.between(begin, end)).call();
         commits = new ArrayList<>();
+        LinkedHashMap<String, RevCommit> commitMap = new LinkedHashMap<>();
         for (RevCommit commit : logs) {
             if (commit.getFullMessage().startsWith("Merge")) {
                 continue;
             }
-            commits.add(commit);
+            commitMap.put(commit.getName(), commit);
         }
-        LogUtil.log("获取到" + commits.size() + "条提交记录: ");
+        LogUtil.log("获取到" + commitMap.size() + "条提交记录: ");
         int serial = 1;
-        for (RevCommit commit : commits) {
+        for (RevCommit commit : commitMap.values()) {
             LogUtil.log(formatCommit(commit, serial++));
+        }
+        if (patchProperties.getCommitFilter()) {
+            ArrayList<String> commitIds = InputUtil.getCommits(scanner);
+            commits = new ArrayList<>(commitMap.size());
+            for (Map.Entry<String, RevCommit> commit : commitMap.entrySet()) {
+                if (commitIds.contains(commit.getKey().substring(0, 8))) {
+                    commits.add(commit.getValue());
+                }
+            }
+        } else {
+            commits = new ArrayList<>(commitMap.values());
         }
     }
 
@@ -267,7 +290,7 @@ public class DeliveryUtil {
     }
 
     private static String formatCommit(RevCommit commit, int serial) {
-        return "Commit[" + serial + "]: " + commit.getName() + " " + DateUtil.toString(commit.getCommitterIdent().getWhen(), "yyyy-MM-dd HH:mm:ss") + " " + commit.getCommitterIdent().getName() + " " + commit.getShortMessage();
+        return "Commit[" + serial + "]: " + commit.getName().substring(0, 8) + " " + DateUtil.toString(commit.getCommitterIdent().getWhen(), "yyyy-MM-dd HH:mm:ss") + " " + commit.getCommitterIdent().getName() + " " + commit.getShortMessage();
     }
 
     private static String formatDiff(DiffEntry diff, int serial) {
@@ -287,11 +310,14 @@ public class DeliveryUtil {
         }
     }
 
-    private static void analyseLog(RevCommit commit) {
+    private static void analyseLog(RevCommit commit, ArrayList<RevCommit> error) {
         // 解析Defect
-        listDefect(commit.getFullMessage());
+        boolean hasDefect = listDefect(commit.getFullMessage());
         // 解析iLink
-        listiLink(commit.getFullMessage());
+        boolean hasiLink = listiLink(commit.getFullMessage());
+        if (!hasDefect && !hasiLink) {
+            error.add(commit);
+        }
     }
 
     private static boolean listDefect(String log) {

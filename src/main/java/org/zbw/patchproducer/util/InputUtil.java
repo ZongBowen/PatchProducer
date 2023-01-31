@@ -5,6 +5,8 @@ import org.zbw.patchproducer.config.PatchProperties;
 import org.zbw.patchproducer.enums.BuildPattern;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -51,6 +53,16 @@ public class InputUtil {
         return checkEndDate(scanner, end);
     }
 
+    public static ArrayList<String> getCommits(Scanner scanner) {
+        ArrayList<String> commits = new ArrayList<>();
+        while (commits.size() == 0) {
+            LogUtil.log("请输入要包含的Commit,以英文逗号分割:");
+            String str = scanner.nextLine();
+            commits.addAll(Arrays.asList(StringUtils.split(str, ",")));
+        }
+        return commits;
+    }
+
     public static String getPatchName(Scanner scanner, boolean auto) {
         String defaultName = "供应链日常补丁" + DateUtil.toString(new Date(), "yyyyMMdd");
         if (auto) {
@@ -93,6 +105,16 @@ public class InputUtil {
             testDesc = testDesc.trim();
         }
         return testDesc;
+    }
+
+    public static boolean canBuild(Scanner scanner) {
+        String canBuild = "";
+        while (StringUtils.isBlank(canBuild)) {
+            LogUtil.log("是否继续生成(y/n):");
+            canBuild = scanner.nextLine();
+            canBuild = canBuild.trim();
+        }
+        return canBuild.toLowerCase().equals("y");
     }
 
     private static String checkPath(Scanner scanner) {

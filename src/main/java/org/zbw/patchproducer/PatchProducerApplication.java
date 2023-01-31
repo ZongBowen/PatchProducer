@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.zbw.patchproducer.entity.*;
+import org.zbw.patchproducer.exception.PatchBuildRuntimeException;
 import org.zbw.patchproducer.util.*;
 
 @SpringBootApplication
@@ -16,6 +17,10 @@ public class PatchProducerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		PatchBuildUtil.buildPatch();
+		try {
+			PatchBuildUtil.buildPatch();
+		} catch (PatchBuildRuntimeException e) {
+			LogUtil.log(e.getMessage());
+		}
 	}
 }
