@@ -1,0 +1,33 @@
+spring:
+  main:
+    web-application-type: none
+logging:
+  path: ../log
+  file: ../log/buildpatch.log
+  file.max-size: 10MB
+  level:
+    root: warn
+  pattern:
+    console: "%d [%t] %-5level : %msg%n"
+    file: "%d %p %m%n"
+patchproducer:
+  tool-version: "3.2.6"
+  product: "Cloud"
+  product-version: "5.0"
+  deploy-unit: "ScmFnd"
+  deploy-unit-name: "供应链设置"
+  deploy-unit-version: "5.0"
+  temp-path: "/PatchTemp"
+  temp-zip-path: "/PatchZipTemp/temp.zip"
+  patch-path: "/Patch"
+  server-path: "/publish/server/apps/scm"
+  web-path: "/publish/web/apps/scm"
+  dbo-path: "/publish/server/apps/scm"
+  data-path: "/publish/tools/setup/db/scm"
+  metadata-path: "/publish/metadata/apps/scm"
+  idp-path: "/idp/scm"
+  server-root: "root"
+  db-root: "DBUpdateFiles"
+  delivery-path: "D:/projects/Scm/delivery/Scm_All"
+  default-begin: "2023-01-04 06:00"
+  version: "1.0.0-BETA"
