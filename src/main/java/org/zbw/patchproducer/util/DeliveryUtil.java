@@ -29,6 +29,7 @@ public class DeliveryUtil {
     private static String patchName;
     private static boolean auto;
     private static ArrayList<RevCommit> commits;
+    private static HashMap<String, String> previousCommit;
     private static List<DiffEntry> diffs;
     private static ArrayList<String> diffPaths;
     private static HashMap<String, String> issues;
@@ -220,6 +221,7 @@ public class DeliveryUtil {
         for (RevCommit commit : commitMap.values()) {
             LogUtil.log(formatCommit(commit, serial++));
         }
+        // 指定提交
         if (patchProperties.getCommitFilter()) {
             ArrayList<String> commitIds = InputUtil.getCommits(scanner);
             commits = new ArrayList<>(commitMap.size());
@@ -234,13 +236,25 @@ public class DeliveryUtil {
     }
 
     private static void listDiff(Git git) throws IOException, GitAPIException {
-        RevCommit oldCommit = commits.get(commits.size() - 1).getParent(0);
-        RevCommit newCommit = commits.get(0);
-        LogUtil.log("开始获取" + oldCommit.getName() + "-" + newCommit.getName() + "的差异...");
-        diffs = git.diff()
-                .setOldTree(prepareTreeParser(git.getRepository(), oldCommit.getId().getName()))
-                .setNewTree(prepareTreeParser(git.getRepository(), newCommit.getId().getName()))
-                .call();
+        if (patchProperties.getCommitFilter()) {
+            diffs = new ArrayList<>();
+            for (RevCommit commit : commits) {
+                LogUtil.log("开始获取" + commit.getParent(0).getName() + "-" + commit.getName() + "的差异...");
+                List<DiffEntry> diff = git.diff()
+                        .setOldTree(prepareTreeParser(git.getRepository(), commit.getParent(0).getId().getName()))
+                        .setNewTree(prepareTreeParser(git.getRepository(), commit.getId().getName()))
+                        .call();
+                diffs.addAll(diff);
+            }
+        } else {
+            RevCommit oldCommit = commits.get(commits.size() - 1).getParent(0);
+            RevCommit newCommit = commits.get(0);
+            LogUtil.log("开始获取" + oldCommit.getName() + "-" + newCommit.getName() + "的差异...");
+            diffs = git.diff()
+                    .setOldTree(prepareTreeParser(git.getRepository(), oldCommit.getId().getName()))
+                    .setNewTree(prepareTreeParser(git.getRepository(), newCommit.getId().getName()))
+                    .call();
+        }
         LogUtil.log("获取到" + diffs.size() + "条差异: ");
         int serial = 1;
         diffPaths = new ArrayList<>();
