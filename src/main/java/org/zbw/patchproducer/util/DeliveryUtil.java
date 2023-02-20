@@ -329,19 +329,23 @@ public class DeliveryUtil {
         boolean hasDefect = listDefect(commit.getFullMessage());
         // 解析iLink
         boolean hasiLink = listiLink(commit.getFullMessage());
-        if (!hasDefect && !hasiLink) {
+        // 解析BackLog
+        boolean hasBackLog = listBackLog(commit.getFullMessage());
+        if (!hasDefect && !hasiLink && !hasBackLog) {
             error.add(commit);
         }
     }
 
     private static boolean listDefect(String log) {
-        if (RegexUtil.getMatchCnt(log, "[Bb]ug\\s?\\d{6,7}") == 1 && RegexUtil.getMatchCnt(log, "#\\d{6,7}|i[Ll]ink\\s?\\d{6,7}") == 0) {
+        if (RegexUtil.getMatchCnt(log, RegexUtil.DEFECT_PREFIX_PATTERN) == 1
+                && RegexUtil.getMatchCnt(log, RegexUtil.ILINK_PREFIX_PATTERN) == 0
+                && RegexUtil.getMatchCnt(log, RegexUtil.BACKLOG_PREFIX_PATTERN) == 0) {
             String code = getDefectCode(log);
             String msg = getDefectMsg(log);
             putIssue(code, msg);
             return true;
         }
-        String pattern = "[Bb]ug\\s?\\d{6,7}[:：]\\s?.*?(?=[Bb]ug|[;；]|$|\\n)";
+        String pattern = RegexUtil.DEFECT_PATTERN;
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(log);
         while (m.find()) {
@@ -354,19 +358,42 @@ public class DeliveryUtil {
     }
 
     private static boolean listiLink(String log) {
-        if (RegexUtil.getMatchCnt(log, "#\\d{6,7}|i[Ll]ink\\s?\\d{6,7}") == 1 && RegexUtil.getMatchCnt(log, "[Bb]ug\\s?\\d{6,7}") == 0) {
+        if (RegexUtil.getMatchCnt(log, RegexUtil.DEFECT_PREFIX_PATTERN) == 1
+                && RegexUtil.getMatchCnt(log, RegexUtil.DEFECT_PREFIX_PATTERN) == 0
+                && RegexUtil.getMatchCnt(log, RegexUtil.BACKLOG_PREFIX_PATTERN) == 0) {
             String code = "iLink" + getiLinkCode(log);
             String msg = getiLinktMsg(log);
             putIssue(code, msg);
             return true;
         }
-        String pattern = "(#|i[Ll]ink\\s?).*?(?=#|i[Ll]ink|[;；]|$|\\n)";
+        String pattern = RegexUtil.ILINK_PATTERN;
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(log);
         while (m.find()) {
             String defect = m.group();
             String code = "iLink" + getiLinkCode(defect);
             String msg = getiLinktMsg(defect);
+            putIssue(code, msg);
+        }
+        return false;
+    }
+
+    private static boolean listBackLog(String log) {
+        if (RegexUtil.getMatchCnt(log, RegexUtil.BACKLOG_PREFIX_PATTERN) == 1
+                && RegexUtil.getMatchCnt(log, RegexUtil.DEFECT_PREFIX_PATTERN) == 0
+                && RegexUtil.getMatchCnt(log, RegexUtil.DEFECT_PREFIX_PATTERN) == 0) {
+            String code = getBackLogCode(log);
+            String msg = getBackLogMsg(log);
+            putIssue(code, msg);
+            return true;
+        }
+        String pattern = RegexUtil.BACKLOG_PATTERN;
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(log);
+        while (m.find()) {
+            String defect = m.group();
+            String code = getBackLogCode(defect);
+            String msg = getBackLogMsg(defect);
             putIssue(code, msg);
         }
         return false;
@@ -379,20 +406,28 @@ public class DeliveryUtil {
     }
 
     private static String getDefectCode(String str) {
-        return RegexUtil.getMatchStr(str, "(?<=[Bb]ug\\s?)\\d{6,7}");
+        return RegexUtil.getMatchStr(str, RegexUtil.DEFECT_CODE_PATTERN);
     }
 
     private static String getDefectMsg(String str) {
-        return RegexUtil.getMatchStr(str, "(?<=[Bb]ug\\s?\\d{6,7}[:：]\\s?).*").trim();
+        return RegexUtil.getMatchStr(str, RegexUtil.DEFECT_MSG_PATTERN).trim();
     }
 
     private static String getiLinkCode(String str) {
-        return RegexUtil.getMatchStr(str, "(?<=#)\\d{6,7}|(?<=|i[Ll]ink\\s)\\d{6,7}");
+        return RegexUtil.getMatchStr(str, RegexUtil.ILINK_CODE_PATTERN);
     }
 
     private static String getiLinktMsg(String str) {
-        String msg = RegexUtil.getMatchStr(str, "(?<=i[Ll]ink\\s?\\d{6,7}\\s?).*|(?<=#\\d{6,7}\\s?).*");
+        String msg = RegexUtil.getMatchStr(str, RegexUtil.ILINK_MSG_PATTERN);
         return StringUtils.removeStart(StringUtils.removeEnd(msg.trim(), ")"), "(");
+    }
+
+    private static String getBackLogCode(String str) {
+        return RegexUtil.getMatchStr(str, RegexUtil.BACKLOG_CODE_PATTERN);
+    }
+
+    private static String getBackLogMsg(String str) {
+        return RegexUtil.getMatchStr(str, RegexUtil.BACKLOG_MSG_PATTERN).trim();
     }
 
     private static String formatMsg(String msg, String prefix, int sequence) {
