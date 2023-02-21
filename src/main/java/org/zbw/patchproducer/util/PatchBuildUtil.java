@@ -355,6 +355,9 @@ public class PatchBuildUtil {
             files.add(getPatchFile(filePath));
             dbFiles.add(new GSPPatchDBFile(filePath.getFileName(), order++, filePath.getLogicalRoot() + filePath.getLogicalPath()));
         }
+        if (dboFiles.size() == 0) {
+            files.add(new GSPPatchFile("Dbo", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        }
         dbGroups.add(new GSPPatchDBGroup("Dbo", 0, dbFiles.size() == 0 ? null : dbFiles));
         dbFiles.clear();
         order = 0;
@@ -362,6 +365,9 @@ public class PatchBuildUtil {
             setParent(filePath.getLogicalRoot() + filePath.getLogicalPath(), filePath.getLevelPath(), files, folderPaths);
             files.add(getPatchFile(filePath));
             dbFiles.add(new GSPPatchDBFile(filePath.getFileName(), order++, filePath.getLogicalRoot() + filePath.getLogicalPath()));
+        }
+        if (dataFiles.size() == 0) {
+            files.add(new GSPPatchFile("Data", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
         }
         dbGroups.add(new GSPPatchDBGroup("Data", 1, dbFiles.size() == 0 ? null : dbFiles));
         dbFiles.clear();
@@ -371,8 +377,12 @@ public class PatchBuildUtil {
             files.add(getPatchFile(filePath));
             dbFiles.add(new GSPPatchDBFile(filePath.getFileName(), order++, filePath.getLogicalRoot() + filePath.getLogicalPath()));
         }
+        if (metaDataFiles.size() == 0) {
+            files.add(new GSPPatchFile("MetaData", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        }
         dbGroups.add(new GSPPatchDBGroup("MetaData", 2, dbFiles.size() == 0 ? null : dbFiles));
         dbFiles.clear();
+        files.add(new GSPPatchFile("BIModel", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
         dbGroups.add(new GSPPatchDBGroup("BIModel", 3, null));
         order = 0;
         for (FilePath filePath : idpFiles) {
@@ -380,6 +390,26 @@ public class PatchBuildUtil {
             files.add(getPatchFile(filePath));
             dbFiles.add(new GSPPatchDBFile(filePath.getFileName(), order++, filePath.getLogicalRoot() + filePath.getLogicalPath()));
         }
+        if (idpFiles.size() == 0) {
+            files.add(new GSPPatchFile("IDP", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        }
+        files.add(new GSPPatchFile("MSSSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("MSSSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("ORASQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("ORASQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("PGSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("PGSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("DMSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("DMSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("MYSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("MYSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("OSCARSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("OSCARSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("KINGBASE_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("KINGBASE_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("DB2_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("DB2_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        files.add(new GSPPatchFile("Assembly", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
         dbGroups.add(new GSPPatchDBGroup("MSSSQL_DDL", 5, null));
         dbGroups.add(new GSPPatchDBGroup("MSSSQL_DML", 6, null));
         dbGroups.add(new GSPPatchDBGroup("ORASQL_DDL", 7, null));
