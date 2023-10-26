@@ -7,7 +7,7 @@ public class FilePath {
     private String logicalPath;
     private String levelPath;
 
-    public FilePath (String fileName, String diskPath, String logicalRoot, String logicalPath, String levelPath) {
+    public FilePath(String fileName, String diskPath, String logicalRoot, String logicalPath, String levelPath) {
         this.fileName = fileName;
         this.diskPath = diskPath;
         this.logicalRoot = logicalRoot;

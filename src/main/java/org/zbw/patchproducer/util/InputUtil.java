@@ -3,10 +3,10 @@ package org.zbw.patchproducer.util;
 import org.apache.commons.lang3.StringUtils;
 import org.zbw.patchproducer.config.PatchProperties;
 import org.zbw.patchproducer.enums.BuildPattern;
+import org.zbw.patchproducer.exception.PatchBuildRuntimeException;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -53,14 +53,47 @@ public class InputUtil {
         return checkEndDate(scanner, end);
     }
 
-    public static ArrayList<String> getCommits(Scanner scanner) {
-        ArrayList<String> commits = new ArrayList<>();
+    public static ArrayList<Integer> getCommits(Scanner scanner) {
+        ArrayList<Integer> commits = new ArrayList<>();
         while (commits.size() == 0) {
-            LogUtil.log("请输入要包含的Commit,以英文逗号分割:");
+            LogUtil.log("请输入要包含的Commit序号,以英文逗号分割(输入0包含全部Commit):");
             String str = scanner.nextLine();
-            commits.addAll(Arrays.asList(StringUtils.split(str, ",")));
+            String[] sp = StringUtils.split(str, ",");
+            try {
+                for (String s : sp) {
+                    int i = Integer.parseInt(s);
+                    if (i == 0) {
+                        ArrayList<Integer> temp = new ArrayList<>();
+                        temp.add(0);
+                        return temp;
+                    }
+                    commits.add(i);
+                }
+            } catch (NumberFormatException e) {
+                throw new PatchBuildRuntimeException("请输入正确的序号");
+            }
         }
         return commits;
+    }
+
+    public static ArrayList<String> getSUs(Scanner scanner) {
+        ArrayList<String> sus = new ArrayList<>();
+        while (sus.size() == 0) {
+            LogUtil.log("请输入要包含的SU,以英文逗号分割(输入scm包含全部SU):");
+            String str = scanner.nextLine().toLowerCase();
+            String[] sp = StringUtils.split(str, ",");
+            try {
+                for (String s : sp) {
+                    if (s.equals("scm")) {
+                        return new ArrayList<>();
+                    }
+                    sus.add(s);
+                }
+            } catch (NumberFormatException e) {
+                throw new PatchBuildRuntimeException("请输入正确的序号");
+            }
+        }
+        return sus;
     }
 
     public static String getPatchName(Scanner scanner, boolean auto) {

@@ -17,20 +17,20 @@ public class RegexUtil {
     public static final String ILINK_PATTERN = "(#|i[Ll]ink\\s?).*?(?=#|i[Ll]ink|[;；]|$|\\n)";
     public static final String BACKLOG_PATTERN = "产品积压工作项\\s?\\d{6,7}[:：]\\s?.*?(?=产品积压工作项|[;；]|$|\\n)";
 
-    public static int getMatchCnt(String str, String pattern){
+    public static int getMatchCnt(String str, String pattern) {
         int cnt = 0;
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(str);
-        while (m.find()){
+        while (m.find()) {
             cnt++;
         }
         return cnt;
     }
 
-    public static String getMatchStr(String str, String pattern){
+    public static String getMatchStr(String str, String pattern) {
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(str);
-        if (m.find()){
+        if (m.find()) {
             return m.group();
         }
         return "";

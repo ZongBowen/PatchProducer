@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.List;
 
-@XmlRootElement(name="GSPPatchDBParam")
+@XmlRootElement(name = "GSPPatchDBParam")
 @XmlType(propOrder = {"name", "dbGroups", "patchModule", "patchModuleVersion"})
 public class GSPPatchDBParam {
     private String name;

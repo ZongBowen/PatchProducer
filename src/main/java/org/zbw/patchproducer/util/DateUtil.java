@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class DateUtil {
     public static final String PATTERN = "yyyy-MM-dd HH:mm";
+
     /**
      * 将日期转为固定格式字符串
      *

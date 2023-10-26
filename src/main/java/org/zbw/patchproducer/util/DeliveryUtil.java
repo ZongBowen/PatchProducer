@@ -74,7 +74,7 @@ public class DeliveryUtil {
                     throw new PatchBuildRuntimeException("未获取到任何提交记录,结束生成");
                 }
                 // 获取差异
-                listDiff(git);
+                listDiff(git, scanner);
                 if (diffs.size() == 0) {
                     throw new PatchBuildRuntimeException("未获取到任何差异,结束生成");
                 }
@@ -218,16 +218,24 @@ public class DeliveryUtil {
         }
         LogUtil.log("获取到" + commitMap.size() + "条提交记录: ");
         int serial = 1;
+        // 序号与提交记录ID映射
+        LinkedHashMap<Integer, String> commitSerial = new LinkedHashMap<>();
         for (RevCommit commit : commitMap.values()) {
-            LogUtil.log(formatCommit(commit, serial++));
+            LogUtil.log(formatCommit(commit, serial));
+            commitSerial.put(serial, commit.getName());
+            serial += 1;
         }
         // 指定提交
         if (patchProperties.getCommitFilter()) {
-            ArrayList<String> commitIds = InputUtil.getCommits(scanner);
+            ArrayList<Integer> commitIds = InputUtil.getCommits(scanner);
             commits = new ArrayList<>(commitMap.size());
-            for (Map.Entry<String, RevCommit> commit : commitMap.entrySet()) {
-                if (commitIds.contains(commit.getKey().substring(0, 8))) {
-                    commits.add(commit.getValue());
+            for (Integer id : commitIds) {
+                if (id == 0) {
+                    commits = new ArrayList<>(commitMap.values());
+                    break;
+                }
+                if (commitSerial.containsKey(id)) {
+                    commits.add(commitMap.get(commitSerial.get(id)));
                 }
             }
         } else {
@@ -235,7 +243,7 @@ public class DeliveryUtil {
         }
     }
 
-    private static void listDiff(Git git) throws IOException, GitAPIException {
+    private static void listDiff(Git git, Scanner scanner) throws IOException, GitAPIException {
         if (patchProperties.getCommitFilter()) {
             diffs = new ArrayList<>();
             for (RevCommit commit : commits) {
@@ -256,15 +264,36 @@ public class DeliveryUtil {
                     .call();
         }
         LogUtil.log("获取到" + diffs.size() + "条差异: ");
+        ArrayList<String> sus = new ArrayList<>();
+        if (patchProperties.getSuFilter()) {
+            sus = InputUtil.getSUs(scanner);
+        }
         int serial = 1;
         diffPaths = new ArrayList<>();
         for (DiffEntry diff : diffs) {
             if (diff.getNewPath().contains("publish_df") || diff.getNewPath().contains("idp_df")) {
                 continue;
             }
-            LogUtil.log(formatDiff(diff, serial++));
-            if (diff.getChangeType().equals(DiffEntry.ChangeType.ADD) || diff.getChangeType().equals(DiffEntry.ChangeType.MODIFY) || diff.getChangeType().equals(DiffEntry.ChangeType.RENAME)) {
-                diffPaths.add(diff.getNewPath());
+            boolean add = true;
+            if (!sus.isEmpty()) {
+                add = false;
+                for (String su : sus) {
+                    if (diff.getNewPath().startsWith(StringUtils.removeStart(patchProperties.getServerPath(), "/") + "/" + su)
+                            || diff.getNewPath().startsWith(StringUtils.removeStart(patchProperties.getWebPath(), "/") + "/" + su)
+                            || diff.getNewPath().startsWith(StringUtils.removeStart(patchProperties.getDboPath(), "/") + "/" + su)
+                            || diff.getNewPath().startsWith(StringUtils.removeStart(patchProperties.getDataPath(), "/") + "/" + su)
+                            || diff.getNewPath().startsWith(StringUtils.removeStart(patchProperties.getMetaDataPath(), "/") + "/" + su)
+                            || diff.getNewPath().startsWith(StringUtils.removeStart(patchProperties.getIdpPath(), "/") + "/" + su)) {
+                        add = true;
+                        break;
+                    }
+                }
+            }
+            if (add) {
+                LogUtil.log(formatDiff(diff, serial++));
+                if (diff.getChangeType().equals(DiffEntry.ChangeType.ADD) || diff.getChangeType().equals(DiffEntry.ChangeType.MODIFY) || diff.getChangeType().equals(DiffEntry.ChangeType.RENAME)) {
+                    diffPaths.add(diff.getNewPath());
+                }
             }
         }
     }

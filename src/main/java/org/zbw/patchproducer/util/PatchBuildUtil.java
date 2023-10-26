@@ -270,8 +270,8 @@ public class PatchBuildUtil {
         basic.setVersion(patchInfo.getPatchBasic().getToolVersion());
         basic.setIsAppUpdate(appFiles.size() > 0);
         basic.setIsConfigUpdate(false);
-        basic.setIsDBUpdate(dataFiles.size() > 0);
-        basic.setIsDBStructUpdate(dboFiles.size() > 0);
+        basic.setIsDBUpdate(false);
+        basic.setIsDBStructUpdate(false);
         basic.setIsMetaDataUpdate(metaDataFiles.size() > 0);
         ArrayList<String> fileNames = new ArrayList<>(appFiles.size());
         appFiles.forEach(x -> fileNames.add(x.getFileName()));

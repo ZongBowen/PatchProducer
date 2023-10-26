@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name="PatchType")
+@XmlRootElement(name = "PatchType")
 @XmlType(propOrder = {"typeCode", "typeName"})
 public class PatchType {
     private String typeCode = "";

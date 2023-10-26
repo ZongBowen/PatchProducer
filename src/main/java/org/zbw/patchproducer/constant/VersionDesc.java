@@ -9,6 +9,7 @@ public class VersionDesc {
         put("v1.0.1-BETA", "1、支持选择部分提交记录\n2、新增校验:无法解析提交内容的提交记录需人工确认");
         put("v1.0.2-BETA", "1、支持解析产品积压工作项");
         put("v1.0.3-BETA", "1、升级补丁工具版本\n2、修复数据库部分缺少文件夹问题");
+        put("v1.0.4-BETA", "1、升级补丁工具版本3.5\n2、支持按照序号选择提交记录\n3、支持过滤su");
     }};
     private static final String HELP = "";
 }

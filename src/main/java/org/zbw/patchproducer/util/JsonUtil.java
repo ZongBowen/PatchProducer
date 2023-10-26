@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
 public class JsonUtil {
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * 序列化json

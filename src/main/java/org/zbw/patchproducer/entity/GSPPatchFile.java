@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name="GSPPatchFile")
+@XmlRootElement(name = "GSPPatchFile")
 @XmlType(propOrder = {"fileName", "isDetail", "diskPath", "logicalPath", "levelPath"})
 public class GSPPatchFile {
     private String fileName = "";
@@ -13,16 +13,16 @@ public class GSPPatchFile {
     private String logicalPath;
     private String levelPath;
 
-    public GSPPatchFile () {
+    public GSPPatchFile() {
 
     }
 
-    public GSPPatchFile (String fileName, String isDetail) {
+    public GSPPatchFile(String fileName, String isDetail) {
         this.fileName = fileName;
         this.isDetail = isDetail;
     }
 
-    public GSPPatchFile (String fileName, String isDetail, String logicalPath, String levelPath) {
+    public GSPPatchFile(String fileName, String isDetail, String logicalPath, String levelPath) {
         this.fileName = fileName;
         this.isDetail = isDetail;
         this.logicalPath = logicalPath;

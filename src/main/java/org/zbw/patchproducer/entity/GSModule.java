@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlRootElement(name="GSModule")
+@XmlRootElement(name = "GSModule")
 @XmlType(propOrder = {"moduleName", "moduleCode", "moduleDepart", "moduleVersionList", "ctrlLic"})
 public class GSModule {
     private String moduleName = "";

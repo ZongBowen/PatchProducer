@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name="File")
+@XmlRootElement(name = "File")
 @XmlType(propOrder = {"name", "folder", "x86Path", "x64Path", "op", "tarFolders"})
 public class PatchAppFile {
     private String name;

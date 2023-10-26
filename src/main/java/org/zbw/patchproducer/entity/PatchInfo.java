@@ -1,9 +1,11 @@
 package org.zbw.patchproducer.entity;
 
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name="Patch")
+@XmlRootElement(name = "Patch")
 @XmlType(propOrder = {"patchBasicInfo", "patchAppInfo", "patchDBInfo"})
 public class PatchInfo {
     private PatchBasicInfo patchBasicInfo;

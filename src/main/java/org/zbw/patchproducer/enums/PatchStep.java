@@ -8,7 +8,7 @@ public enum PatchStep {
     private final String strValue;
     private static HashMap<String, PatchStep> mappings;
 
-    private PatchStep(String value) {
+    PatchStep(String value) {
         strValue = value;
         PatchStep.getMappings().put(value, this);
     }

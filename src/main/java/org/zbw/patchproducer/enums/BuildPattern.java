@@ -8,7 +8,7 @@ public enum BuildPattern {
     private final String strValue;
     private static HashMap<String, BuildPattern> mappings;
 
-    private BuildPattern(String value) {
+    BuildPattern(String value) {
         strValue = value;
         BuildPattern.getMappings().put(value, this);
     }

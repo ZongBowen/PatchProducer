@@ -1,7 +1,5 @@
 package org.zbw.patchproducer.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;

@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name="PatchImportance")
+@XmlRootElement(name = "PatchImportance")
 @XmlType(propOrder = {"impCode", "impName"})
 public class PatchImportance {
     private String impCode = "";

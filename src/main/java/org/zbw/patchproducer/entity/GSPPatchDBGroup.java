@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.List;
 
-@XmlRootElement(name="GSPPatchDBGroup")
+@XmlRootElement(name = "GSPPatchDBGroup")
 @XmlType(propOrder = {"name", "groupOrder", "gspPatchDBFile"})
 public class GSPPatchDBGroup {
     private String name;
@@ -16,7 +16,7 @@ public class GSPPatchDBGroup {
 
     }
 
-    public GSPPatchDBGroup (String name, Integer groupOrder, List<GSPPatchDBFile> gspPatchDBFile) {
+    public GSPPatchDBGroup(String name, Integer groupOrder, List<GSPPatchDBFile> gspPatchDBFile) {
         this.name = name;
         this.groupOrder = groupOrder;
         this.gspPatchDBFile = gspPatchDBFile;

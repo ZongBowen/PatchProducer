@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 import java.util.List;
 
-@XmlRootElement(name="PatchBasicInfo")
+@XmlRootElement(name = "PatchBasicInfo")
 @XmlType(propOrder = {"patchID", "patchName", "patchCode", "patchType", "patchCategory", "patchImportance", "patchGSProductList", "patchGSModule", "defectsCode", "su", "patchNote", "publishDate", "version", "isAppUpdate", "isConfigUpdate", "isDBUpdate", "isDBStructUpdate", "isMetaDataUpdate", "patchAppFiles", "patchGroupOrder", "patchSize", "isModuleInit", "ismatchStandard", "isCommonChange", "patchDepInfo", "patchGroupInfo", "patchAuthorizeInfo", "setContainPatches", "patchReplaceInfo", "problemNote", "funcNote", "bugNote", "configNote", "opNote", "affectFuncNote", "impMetaData_WF", "impMetaData_Print", "ctrlLic"})
 public class PatchBasicInfo {
     private String patchId = "";

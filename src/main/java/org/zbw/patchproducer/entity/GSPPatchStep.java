@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name="GSPPatchStep")
+@XmlRootElement(name = "GSPPatchStep")
 @XmlType(propOrder = {"order", "action", "stepParams", "stepParamsType"})
 public class GSPPatchStep {
     private int order;

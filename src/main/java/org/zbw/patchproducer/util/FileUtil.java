@@ -144,7 +144,7 @@ public class FileUtil {
      *
      * @param folder  文件夹
      * @param path    文件夹路径
-     * @param root  根节点
+     * @param root    根节点
      * @param excepts 排除文件类型
      * @return 文件列表
      */
@@ -179,10 +179,10 @@ public class FileUtil {
     /**
      * 递归获取文件夹下固定后缀的文件
      *
-     * @param folder    文件夹
-     * @param path      文件夹路径
-     * @param root  根节点
-     * @param suffix    后缀
+     * @param folder 文件夹
+     * @param path   文件夹路径
+     * @param root   根节点
+     * @param suffix 后缀
      */
     public static ArrayList<FilePath> listBySuffix(File folder, String path, String root, String suffix) {
         ArrayList<FilePath> filePaths = new ArrayList<>();
@@ -329,7 +329,7 @@ public class FileUtil {
         byte[] buffer = new byte[BUFFER_SIZE];
         try {
             if (isBuffer) {
-                try (OutputStream _out = new BufferedOutputStream(out);) {// 加入缓冲功能
+                try (OutputStream _out = new BufferedOutputStream(out)) {// 加入缓冲功能
                     while ((readSize = in.read(buffer)) != -1) {
                         _out.write(buffer, 0, readSize);
                     }

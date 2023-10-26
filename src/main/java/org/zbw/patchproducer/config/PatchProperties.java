@@ -26,6 +26,7 @@ public class PatchProperties {
     private String deliveryPath;
     private String defaultBegin;
     private Boolean commitFilter;
+    private Boolean suFilter;
 
     public String getToolVersion() {
         return toolVersion;
@@ -185,5 +186,13 @@ public class PatchProperties {
 
     public void setCommitFilter(Boolean commitFilter) {
         this.commitFilter = commitFilter;
+    }
+
+    public Boolean getSuFilter() {
+        return suFilter;
+    }
+
+    public void setSuFilter(Boolean suFilter) {
+        this.suFilter = suFilter;
     }
 }
