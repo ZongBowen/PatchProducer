@@ -2,9 +2,9 @@
 
 #### 一、配置
 
-配置文件路径/config/application.yaml
+**配置文件路径：**/config/application.yaml
 
-参数说明
+**参数说明：**
 
 ```yaml
 # 补丁输出目录
@@ -27,4 +27,9 @@ delivery-path: "D:/projects/Scm/delivery/Scm_All"
 default-begin: "2023-02-04 06:00"
 # 是否开启提交记录过滤
 commit-filter: false
+# 是否开启su过滤
+su-filter: false
 ```
+
+#### 二、操作说明
+

@@ -23,6 +23,7 @@ public class PatchProperties {
     private String idpPath;
     private String serverRoot;
     private String dbRoot;
+    private String dbSupport;
     private String deliveryPath;
     private String defaultBegin;
     private Boolean commitFilter;
@@ -162,6 +163,14 @@ public class PatchProperties {
 
     public void setDBRoot(String dbRoot) {
         this.dbRoot = dbRoot;
+    }
+
+    public String getDBSupport() {
+        return dbSupport;
+    }
+
+    public void setDBSupport(String dbSupport) {
+        this.dbSupport = dbSupport;
     }
 
     public String getDeliveryPath() {

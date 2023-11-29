@@ -314,6 +314,7 @@ public class PatchBuildUtil {
 
     private static PatchDBInfo buildDBXML() {
         PatchDBInfo dbInfo = new PatchDBInfo();
+        ArrayList<String> dbSupports = new ArrayList<>(Arrays.asList(patchProperties.getDBSupport().split(",")));
         if (dboFiles.size() == 0 && dataFiles.size() == 0 && metaDataFiles.size() == 0 && idpFiles.size() == 0) {
             ArrayList<GSPPatchFile> files = new ArrayList<>();
             files.add(new GSPPatchFile("DBUpdateFiles", "0"));
@@ -322,22 +323,10 @@ public class PatchBuildUtil {
             files.add(new GSPPatchFile("MetaData", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
             files.add(new GSPPatchFile("BIModel", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
             files.add(new GSPPatchFile("IDP", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("MSSSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("MSSSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("ORASQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("ORASQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("PGSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("PGSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("DMSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("DMSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("MYSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("MYSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("OSCARSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("OSCARSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("KINGBASE_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("KINGBASE_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("DB2_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-            files.add(new GSPPatchFile("DB2_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+            for (String dbSupport : dbSupports) {
+                files.add(new GSPPatchFile(dbSupport + "_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+                files.add(new GSPPatchFile(dbSupport + "_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+            }
             files.add(new GSPPatchFile("Assembly", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
             dbInfo.setPatchDBFiles(files);
             ArrayList<GSPPatchStep> steps = new ArrayList<>();
@@ -393,40 +382,17 @@ public class PatchBuildUtil {
         if (idpFiles.size() == 0) {
             files.add(new GSPPatchFile("IDP", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
         }
-        files.add(new GSPPatchFile("MSSSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("MSSSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("ORASQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("ORASQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("PGSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("PGSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("DMSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("DMSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("MYSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("MYSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("OSCARSQL_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("OSCARSQL_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("KINGBASE_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("KINGBASE_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("DB2_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        files.add(new GSPPatchFile("DB2_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        for (String dbSupport : dbSupports) {
+            files.add(new GSPPatchFile(dbSupport + "_DDL", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+            files.add(new GSPPatchFile(dbSupport + "_DML", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
+        }
         files.add(new GSPPatchFile("Assembly", "0", "DBUpdateFiles\\", "DBUpdateFiles"));
-        dbGroups.add(new GSPPatchDBGroup("MSSSQL_DDL", 5, null));
-        dbGroups.add(new GSPPatchDBGroup("MSSSQL_DML", 6, null));
-        dbGroups.add(new GSPPatchDBGroup("ORASQL_DDL", 7, null));
-        dbGroups.add(new GSPPatchDBGroup("ORASQL_DML", 8, null));
-        dbGroups.add(new GSPPatchDBGroup("PGSQL_DDL", 9, null));
-        dbGroups.add(new GSPPatchDBGroup("PGSQL_DML", 10, null));
-        dbGroups.add(new GSPPatchDBGroup("DMSQL_DDL", 11, null));
-        dbGroups.add(new GSPPatchDBGroup("DMSQL_DML", 12, null));
-        dbGroups.add(new GSPPatchDBGroup("MYSQL_DDL", 13, null));
-        dbGroups.add(new GSPPatchDBGroup("MYSQL_DML", 14, null));
-        dbGroups.add(new GSPPatchDBGroup("OSCARSQL_DDL", 15, null));
-        dbGroups.add(new GSPPatchDBGroup("OSCARSQL_DML", 16, null));
-        dbGroups.add(new GSPPatchDBGroup("KINGBASE_DDL", 17, null));
-        dbGroups.add(new GSPPatchDBGroup("KINGBASE_DML", 18, null));
-        dbGroups.add(new GSPPatchDBGroup("DB2_DDL", 19, null));
-        dbGroups.add(new GSPPatchDBGroup("DB2_DML", 20, null));
-        dbGroups.add(new GSPPatchDBGroup("Assembly", 21, null));
+        int groupOrder = 5;
+        for (String dbSupport : dbSupports) {
+            dbGroups.add(new GSPPatchDBGroup(dbSupport + "_DDL", groupOrder++, null));
+            dbGroups.add(new GSPPatchDBGroup(dbSupport + "_DML", groupOrder++, null));
+        }
+        dbGroups.add(new GSPPatchDBGroup("Assembly", groupOrder, null));
         dbInfo.setPatchDBFiles(files);
         ArrayList<GSPPatchStep> steps = new ArrayList<>();
         GSPPatchDBParam dbParam = new GSPPatchDBParam();
