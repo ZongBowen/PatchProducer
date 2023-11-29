@@ -11,17 +11,18 @@ logging:
     console: "%d [%t] %-5level : %msg%n"
     file: "%d %p %m%n"
 patchproducer:
-  tool-version: "3.5"
+  tool-version: "3.5.1"
   product: "Cloud"
-  product-version: "5.0"
+  product-version: "6.0"
   deploy-unit: "ScmFnd"
   deploy-unit-name: "供应链设置"
-  deploy-unit-version: "5.0"
+  deploy-unit-version: "6.0"
   temp-path: "/PatchTemp"
   temp-zip-path: "/PatchZipTemp/temp.zip"
   server-root: "root"
   db-root: "DBUpdateFiles"
-  version: "1.0.4-BETA"
+  db-support: "MSSSQL,ORASQL,PGSQL,DMSQL,MYSQL,OSCARSQL,KINGBASE,DB2,OCEANBASE"
+  version: "1.0.5-BETA"
   # 可修改参数配置
   # 补丁输出目录
   patch-path: "/Patch"
@@ -40,7 +41,7 @@ patchproducer:
   # 交付物路径
   delivery-path: "D:/projects/Scm/delivery/Scm_All"
   # 默认起始日期
-  default-begin: "2023-10-25 06:00"
+  default-begin: "2023-10-28 06:00"
   # 是否开启提交记录过滤
   commit-filter: true
   # 是否开启su过滤
