@@ -22,7 +22,7 @@ patchproducer:
   server-root: "root"
   db-root: "DBUpdateFiles"
   db-support: "MSSSQL,ORASQL,PGSQL,DMSQL,MYSQL,OSCARSQL,KINGBASE,DB2,OCEANBASE"
-  version: "1.0.5-BETA"
+  version: "1.0.6-BETA"
   # 可修改参数配置
   # 补丁输出目录
   patch-path: "/Patch"
@@ -41,7 +41,7 @@ patchproducer:
   # 交付物路径
   delivery-path: "D:/projects/Scm/delivery/Scm_All"
   # 默认起始日期
-  default-begin: "2023-10-28 06:00"
+  default-begin: "2024-04-15 06:00"
   # 是否开启提交记录过滤
   commit-filter: true
   # 是否开启su过滤
